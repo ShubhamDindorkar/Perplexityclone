@@ -21,3 +21,20 @@ def search_web(query, num=5):
     return result.results
 
 print("✅ Search function ready")
+
+def ask_ai(prompt):
+    """Get AI response from Cerebras"""
+    chat_completion = client.chat.completions.create(
+      messages=[
+          {
+              "role": "user",
+              "content": prompt,
+          }
+      ],
+      model="llama-4-scout-17b-16e-instruct",
+      max_tokens = 600,
+      temperature = 0.2
+    )
+    return chat_completion.choices[0].message.content
+
+print("✅ AI function ready")
