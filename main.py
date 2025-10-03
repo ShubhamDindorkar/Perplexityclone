@@ -91,3 +91,83 @@ INSIGHTS:
     return {"query": query, "sources": len(sources), "response": response}
 
 print("✅ Research function ready")
+
+def deeper_research_topic(query):
+    """Two-layer research for better depth"""
+    print(f"🔍 Researching: {query}")
+
+    # Layer 1: Initial search
+    results = search_web(query, 6)
+    sources = []
+    for result in results:
+        if result.text and len(result.text) > 200:
+            sources.append({"title": result.title, "content": result.text})
+
+    print(f"Layer 1: Found {len(sources)} sources")
+
+    if not sources:
+        return {"summary": "No sources found", "insights": []}
+
+    # Get initial analysis and identify follow-up topic
+    context1 = f"Research query: {query}\n\nSources:\n"
+    for i, source in enumerate(sources[:4], 1):
+        context1 += f"{i}. {source['title']}: {source['content'][:300]}...\n\n"
+
+    follow_up_prompt = f"""{context1}
+
+Based on these sources, what's the most important follow-up question that would deepen our understanding of "{query}"?
+
+Respond with just a specific search query (no explanation):"""
+
+    follow_up_query = ask_ai(follow_up_prompt).strip().strip('"')
+
+    # Layer 2: Follow-up search
+    print(f"Layer 2: Investigating '{follow_up_query}'")
+    follow_results = search_web(follow_up_query, 4)
+
+    for result in follow_results:
+        if result.text and len(result.text) > 200:
+            sources.append({"title": f"[Follow-up] {result.title}", "content": result.text})
+
+    print(f"Total sources: {len(sources)}")
+
+    # Final synthesis
+    all_context = f"Research query: {query}\nFollow-up: {follow_up_query}\n\nAll Sources:\n"
+    for i, source in enumerate(sources[:7], 1):
+        all_context += f"{i}. {source['title']}: {source['content'][:300]}...\n\n"
+
+    final_prompt = f"""{all_context}
+
+Provide a comprehensive analysis:
+
+SUMMARY: [3-4 sentences covering key findings from both research layers]
+
+INSIGHTS:
+- [insight 1]
+- [insight 2]
+- [insight 3]
+- [insight 4]
+
+DEPTH GAINED: [1 sentence on how the follow-up search enhanced understanding]"""
+
+    response = ask_ai(final_prompt)
+    return {"query": query, "sources": len(sources), "response": response}
+
+print("✅ Enhanced research function ready")
+
+# Test the enhanced research system
+result = deeper_research_topic("climate change solutions 2025")
+
+# Display results
+print("\n" + "="*50)
+print("ENHANCED RESEARCH RESULTS")
+print("="*50)
+print(f"Query: {result['query']}")
+print(f"Sources analyzed: {result['sources']}")
+print(f"\n{result['response']}")
+print("="*50)
+
+# Try more topics
+print("\nTry these:")
+print("deeper_research_topic('quantum computing advances')")
+print("deeper_research_topic('space exploration news')")
