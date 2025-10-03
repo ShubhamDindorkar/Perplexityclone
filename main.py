@@ -259,19 +259,17 @@ RESEARCH QUALITY:
 
 print("✅ Anthropic multi-agent system ready!")
 
-# Test the enhanced research system
-result = deeper_research_topic("climate change solutions 2025")
+# Test the Anthropic multi-agent research system
+result = anthropic_multiagent_research("current climate change solutions")
 
-# Display results
-print("\n" + "="*50)
-print("ENHANCED RESEARCH RESULTS")
-print("="*50)
+print("\n" + "🤖" * 30)
+print("ANTHROPIC MULTI-AGENT DEMO")
+print("🤖" * 30)
 print(f"Query: {result['query']}")
-print(f"Sources analyzed: {result['sources']}")
-print(f"\n{result['response']}")
-print("="*50)
-
-# Try more topics
-print("\nTry these:")
-print("deeper_research_topic('quantum computing advances')")
-print("deeper_research_topic('space exploration news')")
+print(f"Subagents deployed: {result['subagents']}")
+print(f"Total sources: {result['total_sources']}")
+print("\n💡 Key Innovation: Parallel specialized agents + intelligent orchestration")
+print("\n🎯 Try other complex topics:")
+print("anthropic_multiagent_research('quantum computing commercial applications')")
+print("anthropic_multiagent_research('artificial intelligence safety frameworks')")
+print("anthropic_multiagent_research('renewable energy policy implementation')")
